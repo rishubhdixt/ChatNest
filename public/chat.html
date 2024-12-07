@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat Room</title>
+  <script src="/socket.io/socket.io.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="chat-container">
+    <h1 id="room-name">Chat Room</h1>
+    <div id="messages" class="messages"></div>
+    <div class="chat-input">
+      <input id="message-input" type="text" placeholder="Type your message here...">
+      <button id="send-button">Send</button>
+    </div>
+  </div>
+
+  <script>
+    const socket = io();
+    const urlParams = new URLSearchParams(window.location.search);
+    const roomName = urlParams.get('room');
+    const username = prompt("Enter your username:");
+
+    document.getElementById('room-name').textContent = `Chat Room: ${roomName}`;
+
+    socket.emit('join-room', { roomName, username });
+
+    socket.on('chat-message', (data) => {
+      const messages = document.getElementById('messages');
+      const msgElement = document.createElement('div');
+      msgElement.classList.add('message');
+      msgElement.innerHTML = `<span class="message-username">${data.username}:</span> <span class="message-content">${data.message}</span>`;
+      messages.appendChild(msgElement);
+      messages.scrollTop = messages.scrollHeight;
+    });
+
+    document.getElementById('send-button').addEventListener('click', () => {
+      const input = document.getElementById('message-input');
+      const message = input.value;
+      if (message) {
+        socket.emit('send-message', { roomName, message, username });
+        input.value = '';
+      }
+    });
+  </script>
+</body>
+</html>

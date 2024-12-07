@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>Chat Room App</title>
+</head>
+<body>
+  <div class="header">
+    <h1>ChatNest</h1>
+  </div>
+
+  <div class="content">
+    <h2>Create and Join Chat Rooms</h2>
+
+    <div id="create-room" class="room-box">
+      <input type="text" id="room-name" placeholder="Enter room name" />
+      <button id="create-room-btn">Create Room</button>
+    </div>
+
+    <h3>Available Rooms</h3>
+    <div id="room-list" class="room-list-box"></div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
